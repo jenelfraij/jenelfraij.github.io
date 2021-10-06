@@ -1,0 +1,42 @@
+---
+layout: post
+title: Blog Post 0
+---
+
+*This blog post is a tutorial explaining how to construct an interesting data visualization of the Palmer Penguins data set.*
+
+Jenel Fraij
+2021-09-27
+
+### Read the Data
+First of all, let's start by reading our favorite dataset into Python using Pandas.
+
+```python
+import pandas as pd
+url = "https://raw.githubusercontent.com/PhilChodrow/PIC16B/master/datasets/palmer_penguins.csv"
+penguins = pd.read_csv(url)
+```
+
+### Clean the Data
+Now we don't need the entire penguins dataset to make one visualization, we will pick out only the relevant columns for our plot. I am interested to see the correlation between flipper length and body mass of the penguin, and whether or not the island on which the penguin lives has anything to do with its flipper length and body mass.
+
+Some rows in the penguins dataframe contain NaN values which are missing information. In order to deal with that we need to drop the rows where at least one element is missing using df.dropna()
+
+```python
+penguins = penguins[['Island', 'Flipper Length (mm)', 'Body Mass (g)']] #choose relevant columns
+penguins = penguins.dropna() # remove missing values from the dataframe
+```
+### Data Visualization 
+Now it's time to actually create our plot!!!
+To do that, we will use Seaborn which is is a data visualization library which works really well with Pandas. From Seaborn we will use the function relplot() to make a scatter plot. The relplot() function has arguments x, y and data parameters to specify values to be plotted on the x-axis, the y-axis and the data it should use. But we also want to encode the Island as point color, and for that we use hue.
+
+```python
+import seaborn as sns
+sns.relplot(x = 'Body Mass (g)',
+            y = 'Flipper Length (mm)',
+            data = penguins,
+            hue = 'Island').set(title = 'Flipper Length vs. Body Mass') # Always set a title of your plot!
+```
+![image-blog0.png](C:\Users\jenel\OneDrive\Desktop\Classes\FA2021\PIC16B\Blog Posts\image-blog0.png)
+
+From the plot, we can see that Penguins with larger body mass tend to have longer flipper length. We can also observe that penguins who live on Biscoe Island tend to have larger body mass than penguins who live on Torgersen and Dream islands.
